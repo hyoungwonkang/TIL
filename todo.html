@@ -1,0 +1,98 @@
+
+<html>
+
+<head>
+    <title>오늘의 투두</title>
+</head>
+<style>
+    #title{
+        color: blue;
+        text-decoration: underline;
+    }
+
+    .wrap{
+        display: flex;
+    }
+
+    .todo-card{
+        border: 10px solid gray;
+        padding: 2em;
+        margin: 2px;
+        border-radius: 5px;
+    }
+
+    button{
+        width: calc(80% - 20px);
+    }
+
+    button:hover{
+        background-color: orange;
+    }
+</style>
+
+<body>
+    
+    <h1 id="title">오늘 할 일</h1>
+
+    <div class="wrap">
+        <div class="todo-card">
+            <h3>고양이 밥주기</h2>
+            <p>고양이 물, 사료 챙겨주기<p>
+            <button onClick="changeBackgroundColor(0)">완료</button>
+        </div>
+    
+        <div class="todo-card">
+            <h3>블로그 하기</h2>
+            <p>고양이 물, 사료 챙겨주기<p>
+            <button>완료</button>
+        </div>
+    </div>
+    <div class="wrap">
+        <div class="todo-card">
+            <h3>강의 보기</h2>
+            <p>고양이 물, 사료 챙겨주기<p>
+            <button>완료</button>
+        </div>
+        <div class="todo-card">
+            <h3>강의 보기</h2>
+            <p>고양이 물, 사료 챙겨주기<p>
+            <button>완료</button>
+        </div>
+    </div>
+
+    
+    <script>
+
+        function sayHello(event){
+            console.log("hello")
+        }
+
+        const wraps = document.getElementsByClassName("wrap")
+        console.log(wraps)
+
+        const title = document.getElementById("title")
+        console.log(title)
+        title.style.backgroundColor = "yellow"
+
+        const buttons = document.getElementsByTagName("button")
+        console.log(buttons)
+
+        for (let i=0; i<buttons.length; i++){
+            buttons[i].addEventListener("click", sayHello)
+        }
+
+        function changeBackgroundColor (index) {
+            let card = document.getElementsByClassName("todo-card")[index]
+            card.style.backgroundColor="gray"
+        }
+
+        const new_div = document.createElement('div')
+        new_div.style.backgroundColor = 'green'
+        new_div.style.width = '100px' 
+        new_div.style.height = '100px' 
+        console.log(new_div)
+        document.body.appendChild(new_div)
+    </script>
+</body>
+
+</html>
