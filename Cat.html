@@ -1,0 +1,19 @@
+class Cat {
+	// 생성자 함수
+  constructor(name) {        // 파라미터는 나중에 어딘가에서 들어옵니다.
+		// 여기서 this는 이 클래스입니다.
+		this.name = name;   Cat.name 되고 name파라미터로 바뀌어집니다.     
+	}
+
+	// 함수
+	showName(){
+		console.log(this.name);
+	}
+}
+
+// 여기서 new는 키워드예요. 새로운 무언가를 만들기 위해서 생성자 함수와 함께 씁니다.
+// 네, new와 생성자 함수는 세트예요 :) (소근 
+let cat = new Cat('perl');      // new는 새로운 것을 만들때 쓰는 키워드입니다. perl이라는 파라미터가
+이제 constructor()로 들어가게 됩니다.
+cat.showName();     //perl이 나옵니다.
+console.log(cat);   
