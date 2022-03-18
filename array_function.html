@@ -1,0 +1,36 @@
+<!-- 문제. 고양이 갯수는? map 함수를 이용하자! -->
+<!-- 오답 -->
+const animals = ["강아지", "고양이", "햄스터", "강아지", "고양이", "고양이", "토끼"];
+
+count = animals.map((count_cat)=>{
+    return animals="고양이"
+})
+
+console.log(count);
+<!-- 정답 -->
+const animals = ["강아지", "고양이", "햄스터", "강아지", "고양이", "고양이", "토끼"];
+
+let count = 0
+count_cat = animals.map((count_cat)=>{
+    if (count_cat === "고양이"){
+        count++
+    }
+})
+
+console.log(count);
+
+<!-- 고양이들만 새 배열에 넣어볼까요?
+아래 for문을 보고 filter로 바꿔봐요! -->
+<!-- 정답 -->
+const animals = ["복슬 강아지", "검정 고양이", "노란 햄스터", "강아지", "노랑 고양이", "고양이", "흰 토끼"];
+
+let plus_cat = animals.filter((a) => { return a.indexOf("고양이") !== -1})
+console.log(plus_cat)
+
+<!-- 문제.두 배열을 합쳐보자! - concat으로 해보자! -->
+<!-- 정답 -->
+const dogs = ["검은 강아지", "노란 강아지", "흰 강아지"];
+const cats = ["검은 고양이", "복슬 고양이", "노란 고양이"];
+
+const merge = dogs.concat(cats)
+console.log(merge)
