@@ -1,0 +1,82 @@
+<html>
+
+<head>
+    <title>오늘의 투두</title>
+</head>
+
+<body>
+    <style>
+        #title{
+            color: blue;
+            text-decoration: underline;
+        }
+    
+        .wrap{
+            display: flex;            /* 반으로 갈라넣기 */
+            align-items:center;        /* 위로 가는거 가운데로 정렬 */
+        }
+    
+        .todo-card{
+            border: 1px solid gray;
+            padding: 2em;
+            margin: 2px;
+            border-radius: 5px;
+        }
+        
+        .add{
+            border: 1px solid gray;
+            padding: 2em;
+            margin: 2px;
+            border-radius: 5px;
+        }
+    
+        button{
+            width:"100px"
+        }
+    
+        button:hover{
+            background-color: orange;
+        }
+    </style>
+
+    <h1 id="title">오늘 할 일</h1>
+    <div class ="wrap">
+        <div class="card-list"></div>
+        <div class="add">
+            <input id="add-input" type="text"/>
+            <button onclick="addCard()"}>추가하기</button>
+        </div>
+    </div>
+
+    <script>            /*스크립트 태그를 div 밑에 넣는 이유는 DOM 조작(추가하기 등등)을
+     하기 위해 DOM 객체(만든 태그들)보다 아래에 둡니다.*/
+        function completeTodo(e) {              //todo-card에 색깔을 주기 위한 함수. e는 eventListener이고 추후 배울 예정
+            console.log("완료했어")
+            console.log(e.target)               // 타겟이 button임을 알기 위해 확인합니다.
+            console.log(e.target.parentElement) // 부모 노드를 찾아 봅니다. todo-card임을 알 수 있습니다.
+            e.target.parentElement.style.backgroundColor = "green"  //green이 나오도록 style.backgroundColor를 쓴다.
+            // let card = document.getElementsByClassName("todo-card")[index]
+            // card.style.backgroundColor="gray"
+        }
+
+        function addCard(){
+            const new_todo = document.createElement('div')       //function 안에 변수 지정 가능.
+            new_todo.className = "todo-card"
+
+            const title = document.createElement("h3")            //기존에 있는거 get하지 않고 create 한다.
+            title.textContent = document.getElementById("add-input").value      //text.Content: 텍스트인 객체를 수정할때 쓰는 프로퍼티. input 태그에 새로운 값을 넣을때는 .value를 넣는다.
+            
+            const button = document.createElement("button")
+            button.textContent = "완료하기"
+         
+            button.addEventListener("click", completeTodo)      // addEventListener: 버튼을 'click'으로 동작하면 함수 작동하는 메서드. completeTodo(e)의 (e)는 빼줘도 된다.
+            
+            new_todo.appendChild(title)         // new_todo라는 div를 만들었으니 appendChild로 자식객체인 title을 넣어준다.
+            new_todo.appendChild(button)
+            
+            document.getElementsByClassName('card-list')[0].appendChild(new_todo)   //getElementsByClassName으로 기존 객체를 찾아오고 하나밖에 없으니 [0]이라 적어준다. 위와 마찬가지로 appendChild로 new_todo를 넣어준다
+        }  
+    </script>
+</body>
+
+</html>
