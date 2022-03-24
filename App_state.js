@@ -31,7 +31,7 @@ function Nav(props){   //순서 1. App함수 내부에서 topics를 받으려면
     lis.push(<li key={t.id}>
       <a id={t.id} href={'/read/'+t.id} onClick={event=>{
         event.preventDefault();
-        props.onChangeMode(event.target.id);
+        props.onChangeMode(Number(event.target.id));
       }}>{t.title}</a>
       </li>)  
   }
@@ -43,11 +43,9 @@ function Nav(props){   //순서 1. App함수 내부에서 topics를 받으려면
 }
 
 function App() {
-  const _mode = useState('WELCOME');
-  const mode = _mode[0];     // _mode의 0번째 원소 즉 상태의 값을 읽을 수 있다.
-  const setMode = _mode[1];
-  
-  console.log('_mode', _mode)
+  const [mode, setMode] = useState('WELCOME');    //위의 3줄 축약형
+  const [id, setID] = useState(null);     // 본문의 값들이 나오기 위한 useState 훅. 초기값 null인 이유는 아직 정해지지 않아서
+ 
   // topics라는 상수를 줘서 튼튼하게 하고 thml,css,js 여러개가 있으니 배열[]을 만든다.
   // 그 후 다들 id값이 있기 때문에 넣으려면 객체로 주는게 좋다. {}:,:}를 쓴다
   const topics = [
@@ -61,16 +59,25 @@ function App() {
   if(mode === 'WELCOME'){
     content = <Article title='Welcome' body='Hello, WEB'></Article>
   }else if(mode === 'READ'){
-    content = <Article title='Welcome' body='Hello, Read'></Article>
+    let title, body = null;
+    for(let i=0; i< topics.length; i++){
+      console.log(topics[i].id, id)   //id state는 문자열로 인식되므로 Number자바스크립트 문법을 쓴다
+      if(topics[i].id === id){
+        title = topics[i].title;
+        body = topics[i].body;
+      }
+    }
+    content = <Article title={title} body={body}></Article>
   }
 
   return (
     <div>
       <Header title="WEB" onChangeMode={()=>{   //2.Header 컴포넌트는 onChangeMode라는 prop을 갖는다. 그리고 id값을 파라미터로 하여
-        mode = 'WELCOME';  // state를 지정하지 않는 한 App의 상태는 변하지 않기에 mode 리턴값을 줄 수가 없다.
+        setMode ('WELCOME');  
       }}></Header>
-      <Nav topics={topics} onChangeMode={(id)=>{
-        mode = 'READ';
+      <Nav topics={topics} onChangeMode={(_id)=>{
+        setMode ('READ');
+        setID(_id); 
       }}></Nav>   {/* 위의 topics를 내부의 prop으로 전달. 이 땐 {}를 써줌*/}
       {content}   {/*위의 조건문 리턴값*/}
     </div>
