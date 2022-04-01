@@ -22,7 +22,7 @@ function Header(props){
   </header>
 }
 
-function Nav(props){   //순서 1. App함수 내부에서 topics를 받으려면 첫번째 파라미터 prop이 필요
+function Nav(props){   
   const lis=[]
   for(let i = 0; i<props.topics.length; i++){
     let t = props.topics[i];
@@ -31,7 +31,7 @@ function Nav(props){   //순서 1. App함수 내부에서 topics를 받으려면
     lis.push(<li key={t.id}>
       <a id={t.id} href={'/read/'+t.id} onClick={event=>{
         event.preventDefault();
-        props.onChangeMode(Number(event.target.id));
+        props.onChangeMode(Number(event.target.id));    // Number를 먼저 생각하는 순서 아님. onChangeMode를 prop으로 보는 곳(<Nav>)에서 부터 생각의 회로 시작.
       }}>{t.title}</a>
       </li>)  
   }
@@ -43,7 +43,7 @@ function Nav(props){   //순서 1. App함수 내부에서 topics를 받으려면
 }
 
 function App() {
-  const [mode, setMode] = useState('WELCOME');    //위의 3줄 축약형
+  const [mode, setMode] = useState('WELCOME');    
   const [id, setID] = useState(null);     // 본문의 값들이 나오기 위한 useState 훅. 초기값 null인 이유는 아직 정해지지 않아서
  
   // topics라는 상수를 줘서 튼튼하게 하고 thml,css,js 여러개가 있으니 배열[]을 만든다.
@@ -72,7 +72,7 @@ function App() {
 
   return (
     <div>
-      <Header title="WEB" onChangeMode={()=>{   //2.Header 컴포넌트는 onChangeMode라는 prop을 갖는다. 그리고 id값을 파라미터로 하여
+      <Header title="WEB" onChangeMode={()=>{   
         setMode ('WELCOME');  
       }}></Header>
       <Nav topics={topics} onChangeMode={(_id)=>{
