@@ -2,6 +2,7 @@ import {createAction, handleActions} from 'redux-actions'
 import {produce} from 'immer'
 import {setCookie, getCookie, deleteCookie} from "../../shared/Cookie"
 import {auth} from '../../shared/firebase'
+import firebase from 'firebase/compat/app';
 
 // actions
 const LOG_OUT = "LOG_OUT";
@@ -20,13 +21,33 @@ const initialState={
 }
 
 // middleware actions
-const loginAction = (user) =>{
+const loginFB = (id, pwd) => {
     return function (dispatch, getState, {history}){
-        console.log(history)
-        dispatch(setUser(user))
-        history.push('/')
+
+    auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).then((res)=>{
+        auth
+            .signInWithEmailAndPassword(id, pwd)
+            .then((user) => {       //then이 어떻게 작동하는지 몰라서 user의 디렉토리를 모르고 쭉쭉 나아감.
+                console.log(user)
+                dispatch(setUser({
+                    user_name:user.user.displayName, // user안의 데이터를 쓰기 위해
+                    id:id, 
+                    user_profile:'',
+                    uid: user.user.uid
+                }))
+
+                history.push('/')
+            })
+            .catch((error) => {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+
+                console.log(errorCode, errorMessage)
+            })
+        })
     }
 }
+
 
 const signupFB = (id, pwd, user_name) => {
     return function (dispatch, getState, {history}){
@@ -40,7 +61,12 @@ const signupFB = (id, pwd, user_name) => {
         auth.currentUser.updateProfile({
             displayName: user_name,
         }).then(()=>{
-            dispatch(setUser({user_name:user_name, id:id, user_profile:''}))
+            dispatch(setUser({
+                user_name:user_name, 
+                id:id, 
+                user_profile:'',
+                uid: user.user.uid
+            }))
             history.push('/')
         }).catch((error) => {
             console.log(error)
@@ -55,6 +81,34 @@ const signupFB = (id, pwd, user_name) => {
         console.log(errorCode, errorMessage)
         // ..
     });
+    }
+}
+
+const loginCheckFB = () => {
+    return function (dispatch, getState, {history}){
+        auth.onAuthStateChanged((user) => {     // 있나없나 확인하는 auth기능. docs참고
+            if(user){
+                dispatch(
+                    setUser({
+                        user_name: user.displayName,
+                        user_profile: '',
+                        id:user.email,
+                        uid:user.uid,
+                    })
+                )
+            }else{
+                dispatch(logOut())
+            }
+        })
+    }
+}
+
+const logoutFB = () => {
+    return function (dispatch, getState, {history}){
+        auth.signOut().then(() => {
+            dispatch(logOut())
+            history.replace('/')       //replace: 지금있는 페이지와 바꿔치기 하는것. 뒤로가기 해도 원래있던 페이지 안나옵니다..
+        })
     }
 }
 
@@ -80,8 +134,10 @@ export default handleActions(
 const actionCreators = {
     logOut,
     getUser,
-    loginAction,
     signupFB,
+    loginFB,
+    loginCheckFB,
+    logoutFB,
 }
 
 export {actionCreators};

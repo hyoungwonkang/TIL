@@ -1,6 +1,6 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth'
-
+ 
 const firebaseConfig = {
     apiKey: "AIzaSyC94jO080hWHX3gyTcwyldIbfk7Ic9iV1A",
     authDomain: "react-high.firebaseapp.com",
@@ -13,6 +13,7 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig)
 
+const apiKey = firebaseConfig.apiKey
 const auth = firebase.auth()
 
-export {auth}
+export {auth, apiKey}
