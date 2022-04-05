@@ -9,18 +9,19 @@ const Input = (props) => {
     if(multiLine){
       return(
         <Grid>
-          <Text margin='0px'>{label}</Text>
+          {label && <Text margin="0px">{label}</Text>}   {/*라벨에 조건문을 걸어서 글을 쓸때만 나오게 합니다.*/}
           <ElTextarea 
-            rows={10}
+            rows={5}
             placeholder={placeholder} 
             onChange={_onChange} />
-        </Grid>
-        )
+        </Grid>      
+      )
     }
+
     return (
       <React.Fragment>
         <Grid>
-          <Text margin="0px">{label}</Text>
+          {label && <Text margin="0px">{label}</Text>}   {/*라벨에 조건문을 걸어서 글을 쓸때만 나오게 합니다.*/}
           <ElInput 
             type={type} 
             placeholder={placeholder} 
@@ -32,7 +33,7 @@ const Input = (props) => {
 
 Input.defaultProps = {
   multiLine: false,
-  label: '텍스트',
+  label: false,
   placeholder: '텍스트를 입력해주세요.',
   type: 'text',
   _onChange: () => {}

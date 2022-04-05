@@ -14,16 +14,15 @@ const Header = (props) => {
     
     const is_session = sessionStorage.getItem(_session_key)? true:false
     console.log(is_session)
-
     if(is_login && is_session){
         return (
             <React.Fragment>
                 <Grid is_flex padding="4px 16px">
                     <Grid>
-                        <Text margin="0px" size="24px" bold>헬로</Text>
+                        <Text size="24px" bold>헬로</Text>
                     </Grid>
                     
-                    <Grid is_flex>
+                    <Grid is_flex >
                         <Button text="내정보"></Button>
                         <Button text="알림"></Button>
                         <Button 

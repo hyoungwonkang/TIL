@@ -3,30 +3,28 @@ import React from 'react';
 import {Grid,Image,Text} from '../elements'
 
 const Post = (props) => {
-
-
+    
     return (
         <React.Fragment>    {/*어떤게 들어가 있나 미리 끼얹어준다*/}
-            <Grid >
-                <Grid is_flex>
-                    <Image shape='circle' src={props.src}></Image>
-                    <Text bold>{props.user_info.user_name}</Text>
-                    <Text>{props.insert_dt}</Text>
+            <Grid>
+                <Grid is_flex padding="16px">
+                    <Grid is_flex width="auto">
+                        <Image shape="circle" src={props.src} />
+                        <Text bold>{props.user_info.user_name}</Text>
+                    </Grid>
+                    <Grid is_flex width="auto">
+                        <Text>{props.insert_dt}</Text>
+                    </Grid>
                 </Grid>
-                <Grid padding='16px'>
+                <Grid padding="16px">
                     <Text>{props.contents}</Text>
                 </Grid>
-                <Grid >
-                    <Image shape='rectangle' src={props.src}></Image>
+                <Grid>
+                    <Image shape="rectangle" src={props.src} />
                 </Grid>
-                <Grid padding='16px'>
-                    <Text bold>댓글{props.comment_cnt}개</Text>
+                <Grid padding="16px">
+                    <Text bold>댓글 {props.comment_cnt}개</Text>
                 </Grid>
-                
-            <div>user_profile/ user_name/ insert_dt</div>
-            <div>contents</div>
-            <div>image</div>
-            <div>comment cnt</div>
             </Grid>
         </React.Fragment>
     )
