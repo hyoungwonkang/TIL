@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 
 const Grid = (props) => {
-
     const {is_flex, width, padding, margin, bg, children} = props;
     
     const styles = {
@@ -36,10 +35,10 @@ const GridBox = styled.div`
     ${(props) => (props.padding ? `padding: ${props.padding}`: '')}      // 백틱을 쓰는 이유는 나중에 props의 정보가 수정될 수 있기 때문에
     ${(props) => (props.margin ? `margin: ${props.margin}`: '')}
     ${(props) => (props.bg ? `background-color: ${props.bg}`: '')}
-    ${(props) =>
+    ${(props) =>(
      props.is_flex
-      ? `display: flex; align-items: center; justify-content: space-between`
-      : ''}
+      ? `display: flex; align-items: center; justify-content: space-between;`
+      : '')}
 `
 
 export default Grid;

@@ -20,10 +20,10 @@ const Header = (props) => {
             <React.Fragment>
                 <Grid is_flex padding="4px 16px">
                     <Grid>
-                        <Text margin="0px" size="24px" bold>헬로</Text>
+                        <Text size="24px" bold>헬로</Text>
                     </Grid>
                     
-                    <Grid is_flex>
+                    <Grid is_flex >
                         <Button text="내정보"></Button>
                         <Button text="알림"></Button>
                         <Button 
