@@ -3,7 +3,7 @@ import React from 'react';
 import {Grid,Image,Text} from '../elements'
 
 const Post = (props) => {
-
+    
     return (
         <React.Fragment>    {/*어떤게 들어가 있나 미리 끼얹어준다*/}
             <Grid>
