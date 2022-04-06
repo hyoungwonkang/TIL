@@ -8,8 +8,17 @@ import { actionCreators as postActions } from '../redux/modules/post';
 const PostWrite = (props) => {
   const dispatch = useDispatch();
   const is_login = useSelector((state) => state.user.is_login);
+  const preview = useSelector((state) => state.image.preview);
+  const post_list = useSelector((state) => state.post.list);
+
+  console.log(props.match.params.id); //
+
+  const post_id = props.match.params.id; //주소창의 아이디를 params로 가져옴
+  const is_edit = post_id ? true : false;
 
   const { history } = props;
+  // 작성모드일때와 수정모드일때 구분하기
+  let _post = is_edit ? post_list.find((p) => p.id === post_id) : null;
 
   const [contents, setContents] = React.useState('');
 
@@ -53,8 +62,11 @@ const PostWrite = (props) => {
             미리보기
           </Text>
         </Grid>
-
-        <Image shape='rectangle' />
+        {/* 미리보기 하기 위하여 src 내용물, Upload의 내용물을 여기로 가져오려면 리덕스를 거쳐야 한다.*/}
+        <Image
+          shape='rectangle'
+          src={preview ? preview : 'http://via.placeholder.com/400x300'}
+        />
       </Grid>
 
       <Grid padding='16px'>

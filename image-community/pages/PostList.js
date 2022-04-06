@@ -9,6 +9,8 @@ import Post from '../components/Post';
 const PostList = (props) => {
   const dispatch = useDispatch();
   const post_list = useSelector((state) => state.post.list);
+  // list를 가져오는 것이 이 PostList 컴포넌트여서 user_info를 여기서 가져옵니다.
+  const user_info = useSelector((state) => state.user.user);
 
   console.log(post_list);
 
@@ -23,7 +25,12 @@ const PostList = (props) => {
     <React.Fragment>
       {/* <Post /> */}
       {post_list.map((p, idx) => {
-        return <Post key={p.id} {...p} />;
+        //?. 쓰면 어떤 객체 안에 든 속성이 있나 없나 확인하고 그 속성을 불러온다. uid로 쓰니 옵셔널체이닝을 쓴다.
+        if (p.user_info.user_id === user_info?.uid) {
+          return <Post key={p.id} {...p} is_me />; //포스트 하나하나마다 이게 내가 맞아 아니야를 is_me값으로 넘겨줌
+        } else {
+          return <Post key={p.id} {...p} />;
+        }
       })}
     </React.Fragment>
   );
