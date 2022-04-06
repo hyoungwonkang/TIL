@@ -1,7 +1,10 @@
 import { createAction, handleActions } from 'redux-actions';
 import { produce } from 'immer';
-import { firestore } from '../../shared/firebase';
+import { firestore, storage } from '../../shared/firebase';
 import moment from 'moment';
+import image from './image';
+
+import { actionCreators as imgaeActions } from './image';
 
 const SET_POST = 'SET_POST';
 const ADD_POST = 'ADD_POST';
@@ -43,17 +46,47 @@ const addPostFB = (contents = '') => {
       insert_dt: moment().format('YYYY-MM-DD hh:mm:ss'),
     };
 
-    postDB
-      //만들어진 정보 들어오고 then에 추가 정보 들어온다
-      .add({ ...user_info, ..._post })
-      .then((doc) => {
-        //파이어스토어와 리덕스의 파일의 모양새를 맞춰야 한다.
-        let post = { user_info, ..._post, id: doc.id };
-        history.replace('/');
-      })
-      .catch((err) => {
-        console.log('post 작성에 실패했어요!', err);
-      });
+    const _image = getState().image.preview;
+    console.log(_image);
+    console.log(typeof _image);
+
+    //파이어베이스 파일 업로드 문법 purString사용
+    //여러개를 넣어도 중복된 파일명이 안생기게 하려고 user_id와 시간을 엮어서('_'나':'로) 파일명 만듦
+    const _upload = storage
+      .ref(`images/${user_info.user_id}_${new Date().getTime()}`)
+      .putString(_image, 'data_url');
+    //이미지 업로드 잘 되는지 확인
+    _upload.then((snapshot) => {
+      snapshot.ref
+        .getDownloadURL()
+        .then((url) => {
+          console.log(url);
+
+          //url은 안쪽에서만 쓸 수 있으니 then을 씀. 체인을 엮어준다고 함.
+          return url;
+        })
+        .then((url) => {
+          postDB
+            //만들어진 정보 들어오고 then에 추가 정보 들어온다
+            .add({ ...user_info, ..._post, image_url: url })
+            .then((doc) => {
+              //파이어스토어와 리덕스의 파일의 모양새를 맞춰야 한다.
+              let post = { user_info, ..._post, id: doc.id, image_url: url };
+              history.replace('/');
+              //업로드가 잘 끝났으니 imageActions의 setPreview를 null로 바꿔줌
+              dispatch(imgaeActions.setPreview(null));
+            })
+            .catch((err) => {
+              window.alert('앗! 포스트 작성에 문제가 있어요!');
+              console.log('post 작성에 실패했어요!', err);
+            });
+          //파이어스토어에 넣다가, 이미지 업로드하다 오류 나는것 방지
+        })
+        .catch((err) => {
+          window.alert('앗! 이미지 업로드에 문제가 있어요!');
+          console.log('앗! 이미지 업로드에 문제가 있어요!', err);
+        });
+    });
   };
 };
 
