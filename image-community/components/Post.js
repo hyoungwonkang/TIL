@@ -7,7 +7,6 @@ import { history } from '../redux/configureStore';
 const Post = (props) => {
   return (
     <React.Fragment>
-      {' '}
       {/*어떤게 들어가 있나 미리 끼얹어준다*/}
       <Grid>
         <Grid is_flex padding='16px'>
