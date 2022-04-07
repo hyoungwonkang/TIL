@@ -6,6 +6,7 @@ import { connectRouter } from 'connected-react-router';
 import User from './modules/user';
 import Post from './modules/post';
 import Image from './modules/image';
+import Comment from './modules/comment';
 
 export const history = createBrowserHistory();
 
@@ -13,11 +14,11 @@ const rootReducer = combineReducers({
   user: User,
   post: Post,
   image: Image,
+  comment: Comment,
   router: connectRouter(history),
 });
 
-// const middlewares = [thunk];
-const middlewares = [thunk.withExtraArgument({ history: history })]; // withEx.. 이건 thunk의 인자를 넘겨주는것 즉 history를 사용할 수 있습니다!
+const middlewares = [thunk.withExtraArgument({ history: history })];
 
 // 지금이 어느 환경인 지 알려줘요. (개발환경, 프로덕션(배포)환경 ...)
 const env = process.env.NODE_ENV;

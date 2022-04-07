@@ -4,6 +4,7 @@ import Upload from '../shared/Upload';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { actionCreators as postActions } from '../redux/modules/post';
+import { actionCreators as imageActions } from '../redux/modules/image';
 
 const PostWrite = (props) => {
   const dispatch = useDispatch();
@@ -20,10 +21,28 @@ const PostWrite = (props) => {
   // 작성모드일때와 수정모드일때 구분하기
   let _post = is_edit ? post_list.find((p) => p.id === post_id) : null;
 
-  const [contents, setContents] = React.useState('');
+  const [contents, setContents] = React.useState(_post ? _post.contents : '');
+
+  React.useEffect(() => {
+    //수정모드 인지 아닌지 확인합니다.
+    if (is_edit && !_post) {
+      history.goBack();
+
+      return;
+    }
+    //수정모드 일 때만 가져오는 imageActions
+    if (is_edit) {
+      dispatch(imageActions.setPreview(_post.image_url));
+    }
+  }, []);
 
   const addPost = () => {
     dispatch(postActions.addPostFB(contents));
+  };
+
+  const editPost = () => {
+    // 수정하는 액션 만들어야 합니다.
+    dispatch(postActions.editPostFB(post_id, { contents: contents }));
   };
 
   const changeContents = (e) => {
@@ -51,7 +70,7 @@ const PostWrite = (props) => {
     <React.Fragment>
       <Grid padding='16px'>
         <Text margin='0px' size='36px' bold>
-          게시글 작성
+          {is_edit ? '게시글 수정' : '게시글 작성'}
         </Text>
         <Upload />
       </Grid>
@@ -80,7 +99,11 @@ const PostWrite = (props) => {
       </Grid>
 
       <Grid padding='16px'>
-        <Button text='게시글 작성' _onClick={addPost}></Button>
+        {is_edit ? (
+          <Button text='게시글 수정' _onClick={editPost}></Button>
+        ) : (
+          <Button text='게시글 작성' _onClick={addPost}></Button>
+        )}
       </Grid>
     </React.Fragment>
   );
